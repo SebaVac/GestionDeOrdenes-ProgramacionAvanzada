@@ -64,5 +64,19 @@ import java.io.*;
         
         }
         }
+        
+        public void eliminarMapa(){
+            
+            
+            
+        }
+        
+        public void eliminarOrden(int rut){
+        System.out.println(rut);
+    }
+    
+        public void eliminarOrden(String nombre){
+        System.out.println(nombre);
+    }
 
     }
