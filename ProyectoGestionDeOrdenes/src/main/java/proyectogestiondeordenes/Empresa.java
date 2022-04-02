@@ -58,12 +58,6 @@ public class Empresa {
         System.out.println(nombre);
     }
     
-    public void eliminarOrden(int rut){
-        System.out.println(rut);
-    }
     
-    public void eliminarOrden(String nombre){
-        System.out.println(nombre);
-    }
     
 }
