@@ -48,6 +48,12 @@ public class Empresa {
         ordenes.add(oo);
     }
     
+    public void mostrarOrdenes(){
+        for(int i = 0; i<this.ordenes.size(); i++){
+            this.ordenes.get(i).mostrarOrdenes();
+        }
+    }
+    
     // SOBRECARGAS
     
     public void buscarOrden(int rut){
