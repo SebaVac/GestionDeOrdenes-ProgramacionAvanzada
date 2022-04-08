@@ -65,6 +65,10 @@ import java.io.*;
         }
         }
         
+        
+        public void mostrarOrdenes(String nombre){    
+       
+        }
         public void eliminarMapa(){
             
             
