@@ -53,6 +53,9 @@ public class ProyectoGestionDeOrdenes {
           
        case 5:
           //Se muestran TODAS las ordenes
+            System.out.println("Se muestra TODAS las ordenes : \n");
+            ProyectoGestionDeOrdenes.mostrarOrdenes();
+            break;
           break;
     }
     
