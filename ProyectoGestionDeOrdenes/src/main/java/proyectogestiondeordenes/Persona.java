@@ -1,46 +1,42 @@
-package proyectogestiondeordenes;
+package proyectoremasterizado;
 
-import java.io.*;
 
 public class Persona {
+    private int rut;                                        //atributos
     private String nombre;
-    private String rut;
-    private Orden[] listaOrdenes = new Orden[20];
+    private String servicio;
     
-
-    /*Constructores*/
-    public Persona(String nombre, String rut, Orden[] listaOrdenes) {
-        this.nombre = nombre;
+    public Persona(int rut, String nombre, String servicio) { //constructor
         this.rut = rut;
-        this.listaOrdenes = listaOrdenes;
+        this.nombre = nombre;
+        this.servicio = servicio;
     }
     
-    /*Metodos*/
-    /*Getter*/
+    public void mostrarPersona(){
+        System.out.println("El RUT "+this.rut+" es de la persona "+this.nombre+", el cual necesita un servicio de "+this.servicio+".");
+    }
+
+    public int getRut() {
+        return rut;
+    }
+
+    public void setRut(int rut) {
+        this.rut = rut;
+    }
+
     public String getNombre() {
         return nombre;
     }
 
-    public String getRut() {
-        return rut;
-    }
-
-    public Orden[] getListaOrdenes() {
-        return listaOrdenes;
-    }
-
-    /*Setter*/ 
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
-    public void setRut(String rut) {
-        this.rut = rut;
+    public String getServicio() {
+        return servicio;
     }
 
-    public void setListaOrdenes(Orden[] listaOrdenes) {
-        this.listaOrdenes = listaOrdenes;
+    public void setServicio(String servicio) {
+        this.servicio = servicio;
     }
-
-    
 }
