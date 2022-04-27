@@ -1,42 +1,110 @@
-package proyectoremasterizado;
+package proyectogestiondeordenes;
 
+import java.io.*;
+import java.util.*;
 
 public class Persona {
-    private int rut;                                        //atributos
+
+    private String rut;
     private String nombre;
-    private String servicio;
+    private ArrayList ordenes;
     
-    public Persona(int rut, String nombre, String servicio) { //constructor
+    /*Constructor*/
+    public Persona(String rut, String nombre, ArrayList ordenes) {
         this.rut = rut;
         this.nombre = nombre;
-        this.servicio = servicio;
-    }
-    
-    public void mostrarPersona(){
-        System.out.println("El RUT "+this.rut+" es de la persona "+this.nombre+", el cual necesita un servicio de "+this.servicio+".");
+        this.ordenes = ordenes;
     }
 
-    public int getRut() {
-        return rut;
-    }
-
-    public void setRut(int rut) {
+    /*Setters*/
+    public void setRut(String rut) {
         this.rut = rut;
-    }
-
-    public String getNombre() {
-        return nombre;
     }
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
-    public String getServicio() {
-        return servicio;
+    public void setOrdenes(ArrayList ordenes) {
+        this.ordenes = ordenes;
     }
 
-    public void setServicio(String servicio) {
-        this.servicio = servicio;
+    /*Getters*/
+    public String getRut() {
+        return rut;
     }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public ArrayList getOrdenes() {
+        return ordenes;
+    }
+
+    /*Metodos*/
+    public boolean agregarOrden(Orden orden) {
+        if (ordenes.add(orden)) {
+            System.out.println("La orden se ha ingresado correctamente.");
+            return true;
+        }
+        return false;
+    }
+
+    public boolean eliminarOrden(String rut) {
+        if (buscarOrden(rut) != null) {
+            ordenes.remove(buscarOrden(rut));
+            return true;
+        }
+        return false;
+    }
+
+    public Orden buscarOrden(String rut) {
+        Orden orden;
+        for (int i = 0; i < ordenes.size(); i++) {
+            orden = (Orden) ordenes.get(i);
+            if (orden.getRut().equals(rut)) {
+                return orden;
+            }
+        }
+        return null;
+    }
+
+    public void mostrarOrdenes() {
+        Orden orden;
+        for (int i = 0; i < ordenes.size(); i++) {
+            orden = (Orden) ordenes.get(i);
+            System.out.println("Datos orden n°" + i + ":\n");
+            System.out.println("Rut cliente: " + orden.getRut() + "\n");
+            System.out.println("Servicio: " + orden.getServicio());
+            System.out.println("     ----------     ");
+        }
+    }
+
+    public Orden modificarOrden(Orden orden) throws IOException{
+            String rutOrden;
+            String rut;
+            String servicio;
+            rutOrden = (String) orden.getRut();
+            
+            BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
+            
+            if(buscarOrden(rutOrden) == orden){
+                
+                System.out.println("Modificar Datos\n");
+                System.out.println("Rut cliente: ");
+                rut = teclado.readLine();
+                orden.setRut(rut);
+                
+                System.out.println("\nServicio ofrecido: ");
+                servicio = teclado.readLine();
+                orden.setServicio(servicio);
+                
+                System.out.println("\nSe ha modificado correctamente.\n");
+
+            }
+            
+        return orden;
+    }
+
 }
