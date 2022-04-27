@@ -43,27 +43,31 @@ public class Persona {
     }
 
     /*Metodos*/
-    public boolean agregarOrden(Orden orden) {
+    public Orden agregarOrden(String rut,String servicio){
+        Orden orden = null;
+        
+        orden.setRut(rut);
+        orden.setServicio(servicio);
+        
+        return orden;
+    }
+    
+    public void agregarOrden(Orden orden) {
         if (ordenes.add(orden)) {
             System.out.println("La orden se ha ingresado correctamente.");
-            return true;
         }
-        return false;
     }
 
-    public boolean eliminarOrden(String rut) {
-        if (buscarOrden(rut) != null) {
-            ordenes.remove(buscarOrden(rut));
-            return true;
-        }
-        return false;
+    public boolean eliminarOrden(String servicio) {
+        Orden orden = buscarOrden(servicio);
+        return ordenes.remove(orden);
     }
 
-    public Orden buscarOrden(String rut) {
+    public Orden buscarOrden(String servicio) {
         Orden orden;
         for (int i = 0; i < ordenes.size(); i++) {
             orden = (Orden) ordenes.get(i);
-            if (orden.getRut().equals(rut)) {
+            if (orden.getServicio().equals(servicio)) {
                 return orden;
             }
         }
