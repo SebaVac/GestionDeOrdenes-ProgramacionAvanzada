@@ -6,22 +6,18 @@ import java.util.*;
 public class Empresa {
 
     /*Variables de instancia*/
-    private HashMap personas;
-
-    /*Constructor*/
-    public Empresa(HashMap personas) {
-        this.personas = personas;
-    }
+    private HashMap <String, Persona> personas = new HashMap <String, Persona> ();
 
     /*Setters*/
-    public void setPersonas(HashMap personas) {
+    public void setPersonas(HashMap<String, Persona> personas) {
         this.personas = personas;
     }
 
     /*Getters*/
-    public HashMap getPersonas() {
+    public HashMap<String, Persona> getPersonas() {
         return personas;
     }
+
 
     /*Metodos*/
     public void agregarPersona() throws IOException{
@@ -46,16 +42,21 @@ public class Empresa {
         
         persona.agregarOrden(orden);
         
-        //personas.put(rut,persona);
-        
+        personas.put(rut,persona);  
     }
     
-    public void agregarOrden(){
+    public void agregarOrden(String rut) throws IOException {
         
-    }
-    
-    public void eliminarOrden(){
+        Persona persona = personas.get(rut);
+        Orden orden;
+        String servicio;
+        BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
         
+        System.out.println("Ingresar nuevo servicio: ");
+        servicio = teclado.readLine();
+        
+        orden = persona.agregarOrden(rut, servicio);
+        persona.agregarOrden(orden);
     }
     
     public void eliminarPersona(){
@@ -63,23 +64,23 @@ public class Empresa {
     }
     
     public void mostrarPersonas(){
+        Persona persona;
         
+        if(personas != null){
+            for(int i = 0;i < personas.size();i++){
+                persona = personas.get(i);
+                System.out.println("Rut: " + persona.getRut()+"\n");
+                System.out.println("Nombre: "+persona.getNombre()+"\n");
+                System.out.println("Servicio(s):");
+                persona.mostrarOrdenes();
+                System.out.println("\n");
+            }
+        }
+
     }
     
-    public void mostrarOrdenes(){
-        
-    }
-    
-    public void buscarPersona(){
-        
-    }
-    
-    public void buscarOrden(){
-        
-    }
-    
-    public void modificarOrden(){
-        
+    public Persona buscarPersona(String rut){
+        return (Persona) personas.get(rut);
     }
     
     public void mostrarMenu(BufferedReader usuario) throws FileNotFoundException, IOException {
@@ -110,11 +111,11 @@ public class Empresa {
                 break;
                 
             case 2:
-                agregarOrden();
+                //agregarOrden();
                 break;
                 
             case 3:
-                eliminarOrden();
+                //eliminarOrden();
                 break;
                 
             case 4:
@@ -122,15 +123,15 @@ public class Empresa {
                 break;
                 
             case 5:
-                buscarOrden();
+                //buscarOrden();
                 break;
                 
             case 6:
-                buscarPersona();
+                //buscarPersona();
                 break;
                 
             case 7:
-                mostrarOrdenes();
+                //mostrarOrdenes();
                 break;
                 
             case 8:
