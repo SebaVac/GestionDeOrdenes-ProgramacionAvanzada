@@ -21,8 +21,8 @@ public class Empresa {
 
     /*Metodos*/
     public void agregarPersona() throws IOException{
-        Persona persona = null;
-        Orden orden = null;
+        Persona persona = new Persona();
+        Orden orden = new Orden();
         String nombre,rut,servicio;
         
         BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
@@ -140,4 +140,72 @@ public class Empresa {
                 
         }
     }
+
+    public void rellenarOrdenesPersonas(Persona auxPersona, String rut) throws IOException{
+        CSV lineas = new CSV("Persona");
+        String linea = lineas.firstLine();
+        linea = lineas.nextLine();
+        
+        HashMap <String,Persona> auxPersonas = new HashMap();
+        ArrayList <Orden> auxOrdenes = new ArrayList();
+        
+        while(linea != null){
+            Persona auxpersona = new Persona();
+            
+            if((lineas.get_csvField(linea, 1).equals(rut))){
+                auxpersona.setRut(lineas.get_csvField(linea,0));
+                System.out.println("Rut: "+lineas.get_csvField(linea,1));
+                auxpersona.setNombre(lineas.get_csvField(linea,2));
+                ImportarCSV();
+                
+                auxPersonas.put(lineas.get_csvField(linea,0), auxpersona);
+            }
+        }
+    }
+    
+        public static void ImportarCSV() {
+        try{
+            ArrayList<Orden> ordenes = new ArrayList(); // Lista donde guardaremos los datos del archivo
+            
+            CSV lineas = new CSV("Usuarios.csv");
+            String linea = lineas.firstLine();
+            linea = lineas.nextLine();
+            
+            // Mientras haya lineas obtenemos los datos del archivo
+            while(linea != null) {
+                String rut = lineas.get_csvField(linea,1);
+                String servicio = lineas.get_csvField(linea,2);
+                
+                ordenes.add(new Orden(rut,servicio)); // Añade la informacion a la lista
+            }
+            
+            lineas.close(); // Cierra el archivo
+
+            
+            }catch(FileNotFoundException e) {
+            }catch(IOException e) {
+            }
+        }
 }
+    /*public void RellenarPersonasSucursal(Sucursal auxSucursal, String comuna) throws IOException{
+        CSV lineas = new CSV ("Persona");
+        String linea = lineas.firstLine();
+        linea = lineas.nextLine();
+        HashMap<String,Persona> auxPersonas = new HashMap();
+        while (linea != null) {
+            Persona auxPersona = new Persona();
+            if ((lineas.get_csvField(linea, 1).equals(comuna))) {
+                auxPersona.setNombre(lineas.get_csvField(linea, 0));
+                System.out.println("Apellido:" + lineas.get_csvField(linea, 3));
+                auxPersona.setApellido(lineas.get_csvField(linea, 1));
+                auxPersona.setComuna(lineas.get_csvField(linea, 2));
+                auxPersona.setRut(lineas.get_csvField(linea, 3));
+                auxPersonas.put(lineas.get_csvField(linea,3),auxPersona);
+            }
+            linea = lineas.nextLine();
+            if (linea == null) {
+                break;
+            }
+        }
+        auxSucursal.setPersonas(auxPersonas);
+    }*/
