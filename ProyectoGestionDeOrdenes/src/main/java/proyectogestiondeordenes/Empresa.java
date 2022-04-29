@@ -6,7 +6,7 @@ import java.util.*;
 public class Empresa {
 
     /*Variables de instancia*/
-    private HashMap <String, Persona> personas = new HashMap <String, Persona> ();
+    private HashMap <String, Persona> personas = new HashMap <> ();
 
     /*Setters*/
     public void setPersonas(HashMap<String, Persona> personas) {
@@ -21,9 +21,10 @@ public class Empresa {
 
     /*Metodos*/
     public void agregarPersona() throws IOException{
-        Persona persona = new Persona();
-        Orden orden = new Orden();
-        String nombre,rut,servicio;
+        Persona persona = new Persona("rut","nombre");
+        
+        Orden orden = new Orden("rut","servicio");
+        String nombre, rut, servicio;
         
         BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
         
@@ -45,12 +46,17 @@ public class Empresa {
         personas.put(rut,persona);  
     }
     
-    public void agregarOrden(String rut) throws IOException {
+    public void agregarOrden() throws IOException {
         
-        Persona persona = personas.get(rut);
+        String rut;
         Orden orden;
         String servicio;
         BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
+        
+        System.out.println("Ingrese el rut del cliente(con puntos y guion): ");
+        rut = teclado.readLine();
+        
+        Persona persona = personas.get(rut);
         
         System.out.println("Ingresar nuevo servicio: ");
         servicio = teclado.readLine();
@@ -59,8 +65,15 @@ public class Empresa {
         persona.agregarOrden(orden);
     }
     
-    public void eliminarPersona(){
+    public void eliminarPersona() throws IOException{
+        Persona persona;
+        String rut;
+        BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
         
+        System.out.println("Ingresar rut del cliente(con puntos y guion): ");
+        rut = teclado.readLine();
+        
+        persona = buscarPersona();
     }
     
     public void mostrarPersonas(){
@@ -76,14 +89,51 @@ public class Empresa {
                 System.out.println("\n");
             }
         }
-
     }
     
-    public Persona buscarPersona(String rut){
+    public void mostrarPersona(Persona persona){
+        String nombre = persona.getNombre();
+        String rut = persona.getRut();
+        
+        System.out.println("Nombre:"+nombre+"\n");
+        System.out.println("Rut:"+rut+"\n"); 
+        persona.mostrarOrdenes();  
+    }
+    
+    public Persona buscarPersona() throws IOException{
+        BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
+        System.out.println("Ingrese el rut del cliente(con puntos y guion): ");
+        String rut = teclado.readLine();
         return (Persona) personas.get(rut);
     }
     
+    public void eliminarOrden() throws IOException{
+        Persona persona = buscarPersona();
+        mostrarPersona(persona);
+        BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
+        
+        System.out.println("Ingrese el servicio que desea eliminar: ");
+        String servicio = teclado.readLine();
+        persona.eliminarOrden(servicio);       
+    }
+   
+    public void modificarOrden() throws IOException{
+        Orden orden;
+        Persona persona = buscarPersona();
+        persona.mostrarOrdenes();
+        
+        System.out.println("Ingrese el numero de la orden que desea modificar:");
+        BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
+        String auxTeclado = teclado.readLine();
+        int i = Integer.parseInt(auxTeclado);
+        orden = persona.modificarOrden((Orden)persona.getOrdenes().get(i-1));
+        persona.getOrdenes().add(i, orden);
+    }
+    
+    
+    
     public void mostrarMenu(BufferedReader usuario) throws FileNotFoundException, IOException {
+        Empresa empresa = new Empresa();
         String opcion;
         int seleccion;
         System.out.println("Menu\n");
@@ -107,11 +157,11 @@ public class Empresa {
 
         switch(seleccion){
             case 1:
-                agregarPersona();
+                empresa.agregarPersona();
                 break;
                 
             case 2:
-                //agregarOrden();
+                empresa.agregarOrden();
                 break;
                 
             case 3:
@@ -141,33 +191,30 @@ public class Empresa {
         }
     }
 
-    public void rellenarOrdenesPersonas(Persona auxPersona, String rut) throws IOException{
-        CSV lineas = new CSV("Persona");
+    public void rellenarPersonas(String rut) throws IOException{
+        CSV lineas = new CSV("Empresa.csv");
         String linea = lineas.firstLine();
         linea = lineas.nextLine();
         
         HashMap <String,Persona> auxPersonas = new HashMap();
-        ArrayList <Orden> auxOrdenes = new ArrayList();
+        ArrayList <Orden> auxOrdenes = new ArrayList<>();
         
         while(linea != null){
-            Persona auxpersona = new Persona();
+        Persona auxpersona = new Persona("rut","nombre");
             
             if((lineas.get_csvField(linea, 1).equals(rut))){
                 auxpersona.setRut(lineas.get_csvField(linea,0));
-                System.out.println("Rut: "+lineas.get_csvField(linea,1));
                 auxpersona.setNombre(lineas.get_csvField(linea,2));
-                ImportarCSV();
-                
+                ImportarCSV(auxOrdenes);
+                auxpersona.setOrdenes(auxOrdenes);
                 auxPersonas.put(lineas.get_csvField(linea,0), auxpersona);
             }
         }
     }
     
-        public static void ImportarCSV() {
-        try{
-            ArrayList<Orden> ordenes = new ArrayList(); // Lista donde guardaremos los datos del archivo
+        public static void ImportarCSV(ArrayList<Orden> ordenes) throws IOException {
             
-            CSV lineas = new CSV("Usuarios.csv");
+            CSV lineas = new CSV("Empresa.csv");
             String linea = lineas.firstLine();
             linea = lineas.nextLine();
             
@@ -176,36 +223,13 @@ public class Empresa {
                 String rut = lineas.get_csvField(linea,1);
                 String servicio = lineas.get_csvField(linea,2);
                 
-                ordenes.add(new Orden(rut,servicio)); // Añade la informacion a la lista
+                Orden orden = new Orden("rut","servicio");
+                orden.setRut(rut);
+                orden.setServicio(servicio);
+                ordenes.add(orden); // Añade la informacion a la lista
             }
             
             lineas.close(); // Cierra el archivo
 
-            
-            }catch(FileNotFoundException e) {
-            }catch(IOException e) {
-            }
         }
 }
-    /*public void RellenarPersonasSucursal(Sucursal auxSucursal, String comuna) throws IOException{
-        CSV lineas = new CSV ("Persona");
-        String linea = lineas.firstLine();
-        linea = lineas.nextLine();
-        HashMap<String,Persona> auxPersonas = new HashMap();
-        while (linea != null) {
-            Persona auxPersona = new Persona();
-            if ((lineas.get_csvField(linea, 1).equals(comuna))) {
-                auxPersona.setNombre(lineas.get_csvField(linea, 0));
-                System.out.println("Apellido:" + lineas.get_csvField(linea, 3));
-                auxPersona.setApellido(lineas.get_csvField(linea, 1));
-                auxPersona.setComuna(lineas.get_csvField(linea, 2));
-                auxPersona.setRut(lineas.get_csvField(linea, 3));
-                auxPersonas.put(lineas.get_csvField(linea,3),auxPersona);
-            }
-            linea = lineas.nextLine();
-            if (linea == null) {
-                break;
-            }
-        }
-        auxSucursal.setPersonas(auxPersonas);
-    }*/
