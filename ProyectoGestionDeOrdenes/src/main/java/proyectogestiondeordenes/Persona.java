@@ -7,15 +7,14 @@ public class Persona {
 
     private String rut;
     private String nombre;
-    private ArrayList ordenes;
-    
-    /*Constructor*/
-    public Persona(String rut, String nombre, ArrayList ordenes) {
+    private ArrayList<Orden> ordenes;
+
+    public Persona(String rut, String nombre) {
         this.rut = rut;
         this.nombre = nombre;
-        this.ordenes = ordenes;
+        this.ordenes = new ArrayList<>();
     }
-
+    
     /*Setters*/
     public void setRut(String rut) {
         this.rut = rut;
@@ -25,7 +24,7 @@ public class Persona {
         this.nombre = nombre;
     }
 
-    public void setOrdenes(ArrayList ordenes) {
+    public void setOrdenes(ArrayList<Orden> ordenes) {
         this.ordenes = ordenes;
     }
 
@@ -38,13 +37,39 @@ public class Persona {
         return nombre;
     }
 
-    public ArrayList getOrdenes() {
+    public ArrayList<Orden> getOrdenes() {
         return ordenes;
     }
 
     /*Metodos*/
+    
+    /*public void ingresarPersonasCSV() throws FileNotFoundException, IOException {
+        CSV lineas = new CSV("Empresa");
+        String linea = lineas.firstLine();
+        linea = lineas.nextLine();
+        
+        ArrayList<Orden> auxOrdenes = new ArrayList();
+
+        while(linea != null){
+        Persona auxPersona = new Persona("rut","nombre",auxOrdenes);
+            for(int i = 0; i < 2; i++){
+                switch(i){
+                    case 0:
+                        auxPersona.setNombre(lineas.get_csvField(linea, i));
+                        break;
+                    case 1:
+                        auxPersona.setRut(lineas.get_csvField(linea, i));
+                        break;
+                }
+            }
+        }
+        String nombrePersona = auxPersona.getNombre();
+        String rutPersona = auxPersona.getRut();
+    }*/
+    
+    /*Sobrecarga de metodos*/
     public Orden agregarOrden(String rut,String servicio){
-        Orden orden = null;
+        Orden orden = new Orden("rut","servicio");
         
         orden.setRut(rut);
         orden.setServicio(servicio);
@@ -53,14 +78,14 @@ public class Persona {
     }
     
     public void agregarOrden(Orden orden) {
-        if (ordenes.add(orden)) {
-            System.out.println("La orden se ha ingresado correctamente.");
-        }
+        this.ordenes.add(orden);
+        System.out.println("\nLa orden se ha ingresado correctamente.\n");
     }
 
-    public boolean eliminarOrden(String servicio) {
+    public void eliminarOrden(String servicio) {
         Orden orden = buscarOrden(servicio);
-        return ordenes.remove(orden);
+        ordenes.remove(orden);
+        System.out.println("\nLa orden se ha eliminado correctamente.\n");
     }
 
     public Orden buscarOrden(String servicio) {
@@ -76,36 +101,37 @@ public class Persona {
 
     public void mostrarOrdenes() {
         Orden orden;
+        int aux;
         for (int i = 0; i < ordenes.size(); i++) {
             orden = (Orden) ordenes.get(i);
-            System.out.println("Datos orden n°" + i + ":\n");
-            System.out.println("Rut cliente: " + orden.getRut() + "\n");
+            aux = i+1;
+            System.out.println("Datos orden n°" + aux + ":");
+            System.out.println("Rut cliente: " + orden.getRut() + "");
             System.out.println("Servicio: " + orden.getServicio());
-            System.out.println("     ----------     ");
+            System.out.println("\n");
         }
     }
 
     public Orden modificarOrden(Orden orden) throws IOException{
             String rutOrden;
-            String rut;
+            String auxRut;
             String servicio;
-            rutOrden = (String) orden.getRut();
+            rutOrden = orden.getRut();
             
             BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
             
             if(buscarOrden(rutOrden) == orden){
                 
-                System.out.println("Modificar Datos\n");
+                System.out.println("Modificar Datos");
                 System.out.println("Rut cliente: ");
-                rut = teclado.readLine();
-                orden.setRut(rut);
+                auxRut = teclado.readLine();
+                orden.setRut(auxRut);
                 
-                System.out.println("\nServicio ofrecido: ");
+                System.out.println("Servicio ofrecido: ");
                 servicio = teclado.readLine();
                 orden.setServicio(servicio);
                 
                 System.out.println("\nSe ha modificado correctamente.\n");
-
             }
             
         return orden;
