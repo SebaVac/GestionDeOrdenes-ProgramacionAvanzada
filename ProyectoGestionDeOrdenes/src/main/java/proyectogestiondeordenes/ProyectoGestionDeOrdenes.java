@@ -16,7 +16,7 @@ public class ProyectoGestionDeOrdenes {
                         empresa.agregarPersona();
                     break;
                 case 2:
-                    //System.out.println("Ingresar nombre del archivo: ");
+                    /*CSV FILE*/
                     break;
                 case 3:
                     empresa.agregarOrden();
@@ -25,13 +25,16 @@ public class ProyectoGestionDeOrdenes {
                     empresa.eliminarOrden();
                     break;
                 case 5:
-                    
+                    empresa.mostrarOrdenes();
                     break;
                 case 6:
                     empresa.modificarOrden();
                     break;
+                case 7:
+                    empresa.eliminarPersona();
+                    break;
             }
-        } while (seleccion != 7);
+        } while (seleccion !=8 );
     }
 
     public static int mostrarMenu(BufferedReader usuario) throws FileNotFoundException, IOException {
@@ -44,7 +47,8 @@ public class ProyectoGestionDeOrdenes {
         System.out.println("4.- Eliminar Orden");
         System.out.println("5.- Mostrar Ordenes");
         System.out.println("6.- Modificar Orden");
-        System.out.println("7.- Salir");
+        System.out.println("7.- Eliminar Persona");
+        System.out.println("8.- Salir");
         System.out.println("Ingresar opcion correspondiente:");
         do {
             opcion = usuario.readLine();
