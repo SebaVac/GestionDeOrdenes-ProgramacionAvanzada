@@ -32,6 +32,7 @@ public class Empresa {
         nombre = teclado.readLine();
         persona.setNombre(nombre);
         
+        
         System.out.println("\nIngrese rut de la persona: ");
         rut = teclado.readLine();
         persona.setRut(rut);
@@ -65,16 +66,6 @@ public class Empresa {
         persona.agregarOrden(orden);
     }
     
-    public void eliminarPersona() throws IOException{
-        Persona persona;
-        String rut;
-        BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
-        
-        System.out.println("Ingresar rut del cliente(con puntos y guion): ");
-        rut = teclado.readLine();
-        
-        persona = buscarPersona();
-    }
     
     public void mostrarPersonas(){
         Persona persona;
@@ -99,6 +90,13 @@ public class Empresa {
         System.out.println("Rut:"+rut+"\n"); 
         persona.mostrarOrdenes();  
     }
+    
+    public void mostrarOrdenes() throws IOException{
+        Persona persona = buscarPersona();
+  
+        persona.mostrarOrdenes();
+    }
+    
     
     public Persona buscarPersona() throws IOException{
         BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
@@ -130,106 +128,13 @@ public class Empresa {
         persona.getOrdenes().add(i, orden);
     }
     
-    
-    
-    public void mostrarMenu(BufferedReader usuario) throws FileNotFoundException, IOException {
-        Empresa empresa = new Empresa();
-        String opcion;
-        int seleccion;
-        System.out.println("Menu\n");
-        System.out.println("1.- Ingresar Datos Manualmente\n");
-        System.out.println("2.- Ingresar nueva orden\n");
-        System.out.println("3.- Eliminar Orden\n");
-        System.out.println("4.- Eliminar Persona\n");
-        System.out.println("5.- Buscar Orden\n");
-        System.out.println("6.- Buscar Persona\n");
-        System.out.println("7.- Mostrar Ordenes\n");
-        System.out.println("8.- Mostrar Personas\n");
-        System.out.println("9.- Salir");
-        System.out.println("Ingresar opcion correspondiente:");
-        do {
-            opcion = usuario.readLine();
-            seleccion = Integer.parseInt(opcion);
-            if ((seleccion > 10) || (seleccion < 1)) {
-                System.out.println("Opcion no valida, intente nuevamente: ");
-            }
-        } while ((seleccion > 10) || (seleccion < 1));
-
-        switch(seleccion){
-            case 1:
-                empresa.agregarPersona();
-                break;
-                
-            case 2:
-                empresa.agregarOrden();
-                break;
-                
-            case 3:
-                //eliminarOrden();
-                break;
-                
-            case 4:
-                eliminarPersona();
-                break;
-                
-            case 5:
-                //buscarOrden();
-                break;
-                
-            case 6:
-                //buscarPersona();
-                break;
-                
-            case 7:
-                //mostrarOrdenes();
-                break;
-                
-            case 8:
-                mostrarPersonas();
-                break;
-                
-        }
+    public void eliminarPersona() throws IOException{
+        String rut;
+        BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
+        System.out.println("Ingresar rut del cliente(con puntos y guion): ");
+        rut = teclado.readLine();
+        personas.remove(rut);
+        System.out.println("Se ha eliminado correctamente");
     }
-
-    public void rellenarPersonas(String rut) throws IOException{
-        CSV lineas = new CSV("Empresa.csv");
-        String linea = lineas.firstLine();
-        linea = lineas.nextLine();
-        
-        HashMap <String,Persona> auxPersonas = new HashMap();
-        ArrayList <Orden> auxOrdenes = new ArrayList<>();
-        
-        while(linea != null){
-        Persona auxpersona = new Persona("rut","nombre");
-            
-            if((lineas.get_csvField(linea, 1).equals(rut))){
-                auxpersona.setRut(lineas.get_csvField(linea,0));
-                auxpersona.setNombre(lineas.get_csvField(linea,2));
-                ImportarCSV(auxOrdenes);
-                auxpersona.setOrdenes(auxOrdenes);
-                auxPersonas.put(lineas.get_csvField(linea,0), auxpersona);
-            }
-        }
-    }
-    
-        public static void ImportarCSV(ArrayList<Orden> ordenes) throws IOException {
-            
-            CSV lineas = new CSV("Empresa.csv");
-            String linea = lineas.firstLine();
-            linea = lineas.nextLine();
-            
-            // Mientras haya lineas obtenemos los datos del archivo
-            while(linea != null) {
-                String rut = lineas.get_csvField(linea,1);
-                String servicio = lineas.get_csvField(linea,2);
-                
-                Orden orden = new Orden("rut","servicio");
-                orden.setRut(rut);
-                orden.setServicio(servicio);
-                ordenes.add(orden); // Añade la informacion a la lista
-            }
-            
-            lineas.close(); // Cierra el archivo
-
-        }
 }
+
