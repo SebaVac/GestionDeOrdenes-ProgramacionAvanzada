@@ -43,30 +43,6 @@ public class Persona {
 
     /*Metodos*/
     
-    /*public void ingresarPersonasCSV() throws FileNotFoundException, IOException {
-        CSV lineas = new CSV("Empresa");
-        String linea = lineas.firstLine();
-        linea = lineas.nextLine();
-        
-        ArrayList<Orden> auxOrdenes = new ArrayList();
-
-        while(linea != null){
-        Persona auxPersona = new Persona("rut","nombre",auxOrdenes);
-            for(int i = 0; i < 2; i++){
-                switch(i){
-                    case 0:
-                        auxPersona.setNombre(lineas.get_csvField(linea, i));
-                        break;
-                    case 1:
-                        auxPersona.setRut(lineas.get_csvField(linea, i));
-                        break;
-                }
-            }
-        }
-        String nombrePersona = auxPersona.getNombre();
-        String rutPersona = auxPersona.getRut();
-    }*/
-    
     /*Sobrecarga de metodos*/
     public Orden agregarOrden(String rut,String servicio){
         Orden orden = new Orden("rut","servicio");
@@ -113,26 +89,21 @@ public class Persona {
     }
 
     public Orden modificarOrden(Orden orden) throws IOException{
-            String rutOrden;
-            String auxRut;
-            String servicio;
-            rutOrden = orden.getRut();
-            
-            BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
-            
-            if(buscarOrden(rutOrden) == orden){
+        String auxRut;
+        String servicio;
+
+        BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
                 
-                System.out.println("Modificar Datos");
-                System.out.println("Rut cliente: ");
-                auxRut = teclado.readLine();
-                orden.setRut(auxRut);
-                
-                System.out.println("Servicio ofrecido: ");
-                servicio = teclado.readLine();
-                orden.setServicio(servicio);
-                
-                System.out.println("\nSe ha modificado correctamente.\n");
-            }
+        System.out.println("Modificar Datos");
+        System.out.println("Rut cliente: ");
+        auxRut = teclado.readLine();
+        orden.setRut(auxRut);
+
+        System.out.println("Servicio ofrecido: ");
+        servicio = teclado.readLine();
+        orden.setServicio(servicio);
+
+        System.out.println("\nSe ha modificado correctamente.\n");
             
         return orden;
     }
