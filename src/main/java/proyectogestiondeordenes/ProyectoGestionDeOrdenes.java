@@ -9,11 +9,13 @@ public class ProyectoGestionDeOrdenes {
         int seleccion;
         BufferedReader usuario = new BufferedReader(new InputStreamReader(System.in));
         Empresa empresa = new Empresa();
+        
+        //ciclo para ir manejando las distintas opciones del menu
         do {
             seleccion = mostrarMenu(usuario);
             switch(seleccion) {
                 case 1:
-                        empresa.agregarPersona();
+                    empresa.agregarPersona();
                     break;
                 case 2:
                     
