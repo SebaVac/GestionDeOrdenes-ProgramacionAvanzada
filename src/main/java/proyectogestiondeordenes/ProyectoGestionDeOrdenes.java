@@ -38,8 +38,16 @@ public class ProyectoGestionDeOrdenes {
                 case 8:
                     empresa.mostrarPersonas();
                     break;
+                case 9:
+                    empresa.mostrarParesImpares();
+                    break;
+                case 10:
+                    empresa.mostrarEstadoDeServicio();
+                    break;
+                case 11:
+                    return;
             }
-        } while (seleccion !=9 );
+        } while (seleccion !=12 );
     }
 
     public static int mostrarMenu(BufferedReader usuario) throws FileNotFoundException, IOException {
@@ -54,15 +62,17 @@ public class ProyectoGestionDeOrdenes {
         System.out.println("6.- Modificar Orden");
         System.out.println("7.- Eliminar Persona");
         System.out.println("8.- Mostrar Personas");
-        System.out.println("9.- Salir");
+        System.out.println("9.- Mostrar si el numero total de ordenes es par/impar");
+        System.out.println("10.- Mostrar estado de servicios");
+        System.out.println("11.- Salir");
         System.out.println("Ingresar opcion correspondiente:");
         do {
             opcion = usuario.readLine();
             seleccion = Integer.parseInt(opcion);
-            if ((seleccion > 9) || (seleccion < 1)) {
+            if ((seleccion > 12) || (seleccion < 1)) {
                 System.out.println("Opcion no valida, intente nuevamente: ");
             }
-        } while ((seleccion > 9) || (seleccion < 1));
+        } while ((seleccion > 12) || (seleccion < 1));
         return seleccion;
     }
 }

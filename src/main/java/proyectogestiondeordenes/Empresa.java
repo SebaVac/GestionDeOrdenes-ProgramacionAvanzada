@@ -40,28 +40,53 @@ public class Empresa {
         
         //se ingresa servicio
         orden.setServicio(ingresarServicio());
-        
         persona.agregarOrden(orden);
         personas.put(rut,persona);
         listaPersonas.add(persona);
     }
-    
-    public void mostrarPersonas(){//En proceso
+    //SobrecargaMostrarPersona
+    public void mostrarPersonas(){
         Persona persona;
         
         if(personas != null){
             for(int i = 0;i < listaPersonas.size();i++){
                 persona = listaPersonas.get(i);
                 mostrarPersona(persona);
+                
                 System.out.println();
             }
         }
     }
+    public void mostrarParesImpares()throws IOException{
+        Persona persona;
+        if(personas != null){
+            for(int i = 0;i < listaPersonas.size();i++){
+                persona = listaPersonas.get(i);
+                persona.paresEimpares(persona);
+            }
+        }
+    }
+     
     
-    public void mostrarPersona(Persona persona){//En proceso
+    public void mostrarEstadoDeServicio() throws IOException{
+            Persona persona;
+        
+        do{//Se valida si la persona existe o "no es nulo"
+            persona = buscarPersona();        
+            if(persona == null){
+                System.out.println("Rut no encontrado, ingrese nuevamente");
+            }else{
+                persona.mostrarOrdenesPendientes();
+                break;
+            }
+
+        }while(persona != null);
+    
+    }
+    
+    public void mostrarPersona(Persona persona){
         String nombre = persona.getNombre();
         String rut = persona.getRut();
-        
         System.out.println("Nombre:"+nombre);
         System.out.println("Rut:"+rut); 
         persona.mostrarOrdenes();  

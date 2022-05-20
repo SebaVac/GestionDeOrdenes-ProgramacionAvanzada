@@ -48,6 +48,41 @@ public class Persona {
         this.ordenes.add(orden);
         System.out.println("\nLa orden se ha ingresado correctamente.\n");
     }
+    
+    public void paresEimpares(Persona persona){
+        
+        int aux=ordenes.size();  
+        int cont=0;
+        
+        //Se evalua si el numero total de arreglos es par o impar
+        if(aux % 2 == 0){
+           
+            String nombre2 = persona.getNombre();
+            String rut2 = persona.getRut();
+            System.out.println("");
+            System.out.println("El cliente "+nombre2+" con rut "+rut2);
+            System.out.println("Posee una cantidad de ordenes totales pares ");
+            System.out.println("");
+            
+            cont=1+cont;
+            
+        }else{
+        //Si el numero no es par, se entiende que es impar
+            String nombre2 = persona.getNombre();
+            String rut2 = persona.getRut();
+            System.out.println("");
+            System.out.println("El cliente "+nombre2+" con rut "+rut2);
+            System.out.println("Posee una cantidad de ordenes totales impares ");
+            System.out.println("");
+            cont=1+cont;
+        }
+        //Se evalua con un contador si es que existen personas
+        if(cont == 0){
+        System.out.println("No existen usuarios que evaluar"); 
+        }
+
+    
+    }
 
     public void eliminarOrden(String servicio) {
         Orden orden = buscarOrden(servicio);
@@ -85,6 +120,22 @@ public class Persona {
         }
     }
 
+    
+    public void mostrarOrdenesPendientes(){
+        Orden orden;
+        String comp = "Pendiente";
+        int cont=0;
+        
+        for (int i = 0; i < ordenes.size(); i++) {//se recorre la lista de ordenes y se muestran los datos
+        orden = (Orden) ordenes.get(i);
+            if(comp.equals(orden.getServicio())){
+            cont=cont+1;
+            }
+        }
+        System.out.println("");
+        System.out.println("Se ecuentran "+cont+" ordenes pendientes");
+        System.out.println("");
+    }
     public Orden modificarOrden(Orden orden) throws IOException{
         String servicio;
 
