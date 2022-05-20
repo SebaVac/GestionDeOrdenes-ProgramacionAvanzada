@@ -9,16 +9,14 @@ public class ProyectoGestionDeOrdenes {
         int seleccion;
         BufferedReader usuario = new BufferedReader(new InputStreamReader(System.in));
         Empresa empresa = new Empresa();
-        
-        //ciclo para ir manejando las distintas opciones del menu
         do {
             seleccion = mostrarMenu(usuario);
             switch(seleccion) {
                 case 1:
-                    empresa.agregarPersona();
+                        empresa.agregarCliente();
                     break;
                 case 2:
-                    
+                     /* nose que decia */
                     break;
                 case 3:
                     empresa.agregarOrden();
@@ -33,21 +31,10 @@ public class ProyectoGestionDeOrdenes {
                     empresa.modificarOrden();
                     break;
                 case 7:
-                    empresa.eliminarPersona();
+                    empresa.eliminarCliente();
                     break;
-                case 8:
-                    empresa.mostrarPersonas();
-                    break;
-                case 9:
-                    empresa.mostrarParesImpares();
-                    break;
-                case 10:
-                    empresa.mostrarEstadoDeServicio();
-                    break;
-                case 11:
-                    return;
             }
-        } while (seleccion !=12 );
+        } while (seleccion !=8 );
     }
 
     public static int mostrarMenu(BufferedReader usuario) throws FileNotFoundException, IOException {
@@ -61,18 +48,90 @@ public class ProyectoGestionDeOrdenes {
         System.out.println("5.- Mostrar Ordenes");
         System.out.println("6.- Modificar Orden");
         System.out.println("7.- Eliminar Persona");
-        System.out.println("8.- Mostrar Personas");
-        System.out.println("9.- Mostrar si el numero total de ordenes es par/impar");
-        System.out.println("10.- Mostrar estado de servicios");
-        System.out.println("11.- Salir");
+        System.out.println("8.- Salir");
         System.out.println("Ingresar opcion correspondiente:");
         do {
             opcion = usuario.readLine();
             seleccion = Integer.parseInt(opcion);
-            if ((seleccion > 12) || (seleccion < 1)) {
+            if ((seleccion > 6) || (seleccion < 1)) {
                 System.out.println("Opcion no valida, intente nuevamente: ");
             }
-        } while ((seleccion > 12) || (seleccion < 1));
+        } while ((seleccion > 6) || (seleccion < 1));
         return seleccion;
     }
+    
+
+    
+
+        /*public void ingresar() throws FileNotFoundException, IOException {
+        CSV lineas = new CSV("Regiones");
+        String linea = lineas.firstLine();
+        linea = lineas.nextLine();
+        while (linea != null) {
+            Regiones auxRegion = new Regiones();
+            for (int i = 0; i < 2; i++) {
+                switch (i) {
+                    case 0: {
+                        auxRegion.setNombreRegion(lineas.get_csvField(linea, i));
+                        break;
+                    }
+                    case 1: {
+                        auxRegion.setNumeroRegion(lineas.get_csvField(linea, i));
+                        break;
+                    }
+                }
+            }
+            String nombreRegion = auxRegion.getNombreRegion();
+            RellenarSucursales(auxRegion, nombreRegion);
+            Regiones.add(auxRegion);
+            linea = lineas.nextLine();
+            if (linea == null){
+                    break;
+            }
+        }
+    }
+
+    public void RellenarSucursales(Regiones auxRegion,String nombreRegion) throws FileNotFoundException, IOException{
+        CSV lineas = new CSV ("Sucursales");
+        String linea = lineas.firstLine();
+        linea = lineas.nextLine();
+        ArrayList<Sucursal> auxSucursales = new ArrayList();
+        while(linea != null){
+            Sucursal auxSucursal = new Sucursal();
+            if((lineas.get_csvField(linea, 2)).equals(nombreRegion)){
+                auxSucursal.setComuna(lineas.get_csvField(linea, 1));
+                auxSucursal.setDireccion(lineas.get_csvField(linea, 0));
+                RellenarPersonasSucursal(auxSucursal,lineas.get_csvField(linea, 1));
+                auxSucursales.add(auxSucursal);
+            }
+            linea = lineas.nextLine();
+            if(linea == null){
+                break;
+            }
+        }
+        auxRegion.setSucursales(auxSucursales);
+    }
+    
+    public void RellenarPersonasSucursal(Sucursal auxSucursal, String comuna) throws IOException{
+        CSV lineas = new CSV ("Persona");
+        String linea = lineas.firstLine();
+        linea = lineas.nextLine();
+        HashMap<String,Persona> auxPersonas = new HashMap();
+        while (linea != null) {
+            Persona auxPersona = new Persona();
+            if ((lineas.get_csvField(linea, 1).equals(comuna))) {
+                auxPersona.setNombre(lineas.get_csvField(linea, 0));
+                System.out.println("Apellido:" + lineas.get_csvField(linea, 3));
+                auxPersona.setApellido(lineas.get_csvField(linea, 1));
+                auxPersona.setComuna(lineas.get_csvField(linea, 2));
+                auxPersona.setRut(lineas.get_csvField(linea, 3));
+                auxPersonas.put(lineas.get_csvField(linea,3),auxPersona);
+            }
+            linea = lineas.nextLine();
+            if (linea == null) {
+                break;
+            }
+        }
+        auxSucursal.setPersonas(auxPersonas);
+    }*/
 }

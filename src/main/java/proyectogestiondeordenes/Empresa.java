@@ -6,113 +6,47 @@ import java.util.*;
 public class Empresa {
 
     /*Variables de instancia*/
-    private HashMap <String, Persona> personas = new HashMap <> ();
-    private ArrayList <Persona> listaPersonas = new ArrayList <> ();
+    private HashMap <String, Empleado> empleados = new HashMap <> ();
+
+    /*Setters*/
+    public void setEmpleados(HashMap<String, Empleado> empleados) {
+        this.empleados = empleados;
+    }
+
+    /*Getters*/
+    public HashMap<String, Empleado> getEmpleados() {
+        return empleados;
+    }
+
 
     /*Metodos*/
-    //metodos relacionados con la persona/cliente
-    public void agregarPersona() throws IOException{
-        Persona persona = new Persona("rut","nombre");
+    public void agregarEmpleado() throws IOException{
+        Empleado empleado = new Empleado("rut","nombre");
         
         Orden orden = new Orden("rut","servicio");
-        String nombre, rut;
+        String nombre, rut, servicio;
         
         BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
         
-        //Se ingresan los datos por teclado
-        System.out.println("Ingrese nombre de la persona: ");
+        System.out.println("Ingrese nombre de la empleado: ");
         nombre = teclado.readLine();
-        persona.setNombre(nombre);
-
-        //ciclo para validar el rut de una persona
-        do{
-            System.out.println("\nIngrese rut de la persona(con puntos y guion): ");
-            rut = teclado.readLine();
-            
-            //Validacion
-            if(rut.length() != 12){
-                System.out.println("Rut incorrecto, intente nuevamente\n");
-            }else{
-                persona.setRut(rut);
-                orden.setRut(rut); 
-            }
-        }while(rut.length() != 12);
+        empleado.setNombre(nombre);
         
-        //se ingresa servicio
-        orden.setServicio(ingresarServicio());
-        persona.agregarOrden(orden);
-        personas.put(rut,persona);
-        listaPersonas.add(persona);
-    }
-    //SobrecargaMostrarPersona
-    public void mostrarPersonas(){
-        Persona persona;
         
-        if(personas != null){
-            for(int i = 0;i < listaPersonas.size();i++){
-                persona = listaPersonas.get(i);
-                mostrarPersona(persona);
-                
-                System.out.println();
-            }
-        }
-    }
-    public void mostrarParesImpares()throws IOException{
-        Persona persona;
-        if(personas != null){
-            for(int i = 0;i < listaPersonas.size();i++){
-                persona = listaPersonas.get(i);
-                persona.paresEimpares(persona);
-            }
-        }
-    }
-     
-    
-    public void mostrarEstadoDeServicio() throws IOException{
-            Persona persona;
-        
-        do{//Se valida si la persona existe o "no es nulo"
-            persona = buscarPersona();        
-            if(persona == null){
-                System.out.println("Rut no encontrado, ingrese nuevamente");
-            }else{
-                persona.mostrarOrdenesPendientes();
-                break;
-            }
-
-        }while(persona != null);
-    
-    }
-    
-    public void mostrarPersona(Persona persona){
-        String nombre = persona.getNombre();
-        String rut = persona.getRut();
-        System.out.println("Nombre:"+nombre);
-        System.out.println("Rut:"+rut); 
-        persona.mostrarOrdenes();  
-    }
-    
-    public Persona buscarPersona() throws IOException{
-        //se ingresa un rut por teclado y se retorna el objeto "Persona" que se encuentra en la coleccion de personas
-        BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("Ingrese el rut del cliente(con puntos y guion): ");
-        String rut = teclado.readLine();
-        
-        return (Persona) personas.get(rut);
-    }
-   
-    public void eliminarPersona() throws IOException{
-        String rut;
-        BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
-        
-        System.out.println("Ingresar rut del cliente(con puntos y guion): ");
+        System.out.println("\nIngrese rut de la empleado: ");
         rut = teclado.readLine();
+        empleado.setRut(rut);
+        orden.setRut(rut);
         
-        personas.remove(rut);//se elimina la persona de el mapa
-        System.out.println("Se ha eliminado correctamente");
+        System.out.println("\nIngrese servicio ofrecido: ");
+        servicio = teclado.readLine();
+        orden.setServicio(servicio);
+        
+        empleado.agregarOrden(orden);
+        
+        empleados.put(rut,empleado);  
     }
     
-    //metodos relacionados con las ordenes
     public void agregarOrden() throws IOException {
         
         String rut;
@@ -120,100 +54,132 @@ public class Empresa {
         String servicio;
         BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
         
-        do{
-            System.out.println("\nIngrese rut de la persona(con puntos y guion): ");
-            rut = teclado.readLine();
-            
-            //Validacion
-            if(rut.length() != 12){
-                System.out.println("Rut incorrecto, intente nuevamente\n");
-            }
-        }while(rut.length() != 12);
+        System.out.println("Ingrese el rut del empleado(con puntos y guion): ");
+        rut = teclado.readLine();
         
-        Persona persona = personas.get(rut);//se obtiene el objeto con clave "rut" del mapa de personas
+        Empleado empleado = empleados.get(rut);
         
-
         System.out.println("Ingresar nuevo servicio: ");
         servicio = teclado.readLine();
         
-        //Modificacion del servicio
-        orden = persona.agregarOrden(rut, servicio);
-        persona.agregarOrden(orden);
+        orden = empleado.agregarOrden(rut, servicio);
+        empleado.agregarOrden(orden);
     }
     
-    public void mostrarOrdenes() throws IOException{
-        Persona persona;
+    
+    public void mostrarEmpleados(){
+        Empleado empleado;
         
-        do{//Se valida si la persona existe o "no es nulo"
-            persona = buscarPersona();        
-            if(persona == null){
-                System.out.println("Rut no encontrado, ingrese nuevamente");
-            }else{
-                persona.mostrarOrdenes();
-                break;
+        if(empleados != null){
+            for(int i = 0;i < empleados.size();i++){
+                empleado = empleados.get(i);
+                System.out.println("Rut: " + empleado.getRut()+"\n");
+                System.out.println("Nombre: "+empleado.getNombre()+"\n");
+                System.out.println("Servicio(s):");
+                empleado.mostrarOrdenes();
+                System.out.println("\n");
             }
-
-        }while(persona != null);
+        }
     }
     
-    public void eliminarOrden() throws IOException{//en proceso
+    public void mostrarEmpleado(Empleado empleado){
+        String nombre = empleado.getNombre();
+        String rut = empleado.getRut();
         
-        Persona persona = buscarPersona();
-        mostrarPersona(persona);
+        System.out.println("Nombre:"+nombre+"\n");
+        System.out.println("Rut:"+rut+"\n"); 
+        empleado.mostrarOrdenes();  
+    }
+    
+    public Empleado buscarEmpleado() throws IOException{
+        BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
+        System.out.println("Ingrese el rut del empleado(con puntos y guion): ");
+        String rut = teclado.readLine();
+        return (Empleado) empleados.get(rut);
+    }
+    
+    public void mostrarOrdenes (){
+        /*empleados.forEach((key, value) -> System.out.println(key + " : " + value));*/
+        System.out.println(empleados.values());
+        System.out.println("aaaa");
+        System.out.println(empleados.keySet());
+       /*for (Map.Entry<String,Empleado> entry : empleados.entrySet()) {
+		    System.out.println(entry.getKey()+" = "+entry.getValue());
+                    
+		}*/
+    }
+    public void eliminarOrden() throws IOException{
+        Empleado empleado = buscarEmpleado();
+        mostrarEmpleado(empleado);
         BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
         
         System.out.println("Ingrese el servicio que desea eliminar: ");
         String servicio = teclado.readLine();
-        persona.eliminarOrden(servicio);       
+        empleado.eliminarOrden(servicio);       
     }
    
     public void modificarOrden() throws IOException{
-        //inicializacion de variables
         Orden orden;
-        Persona persona = buscarPersona();
-        persona.mostrarOrdenes();
+        Empleado empleado = buscarEmpleado();
+        empleado.mostrarOrdenes();
         
         System.out.println("Ingrese el numero de la orden que desea modificar:");
         BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
-
         String auxTeclado = teclado.readLine();
         int i = Integer.parseInt(auxTeclado);
-        
-        i=i-1;//se adapta el valor de i para que este en la escala de un arreglo
-        
-        //se obtiene y modifica la orden
-        orden = persona.buscarOrden(i);
-        persona.modificarOrden(orden);
+        orden = empleado.modificarOrden((Orden)empleado.getOrdenes().get(i-1));
+        empleado.getOrdenes().add(i, orden);
     }
     
-    //metodos relacionados con el servicio
-    public String ingresarServicio() throws IOException{
+    public void eliminarEmpleado() throws IOException{
+        String rut;
         BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
-        String servicio,convertir;
-        int eleccion;
-        
-        System.out.println("¿Ingresar Servicio?");
-       do{
-            System.out.println("1.- Si");
-            System.out.println("2.- No");
-            convertir = teclado.readLine();
-            eleccion = Integer.parseInt(convertir);
-            
-            //Validacion
-            if((eleccion != 1) && (eleccion != 2)){
-                System.out.println("Eleccion no valida, intente nuevamente");
-            }
-       }while((eleccion != 1) && (eleccion != 2));
-        
-        if(eleccion == 1){
-        //se ingresa por teclado el servicio que requirio la persona
-        System.out.println("\nIngrese servicio ofrecido: ");
-        servicio = teclado.readLine(); 
-        
-        return servicio;
-        }
-        
-        return "Pendiente";
+        System.out.println("Ingresar rut del empleado(con puntos y guion): ");
+        rut = teclado.readLine();
+        empleados.remove(rut);
+        System.out.println("Se ha eliminado correctamente");
     }
-}
 
+
+    public void rellenarEmpleados(String rut) throws IOException{
+        CSV lineas = new CSV("Empresa.csv");
+        String linea = lineas.firstLine();
+        linea = lineas.nextLine();
+        
+        HashMap <String,Empleado> auxEmpleados = new HashMap();
+        ArrayList <Orden> auxOrdenes = new ArrayList<>();
+        
+        while(linea != null){
+        Empleado auxempleado = new Empleado("rut","nombre");
+            
+            if((lineas.get_csvField(linea, 1).equals(rut))){
+                auxempleado.setRut(lineas.get_csvField(linea,0));
+                auxempleado.setNombre(lineas.get_csvField(linea,2));
+                ImportarCSV(auxOrdenes);
+                auxempleado.setOrdenes(auxOrdenes);
+                auxEmpleados.put(lineas.get_csvField(linea,0), auxempleado);
+            }
+        }
+    }
+    
+        public static void ImportarCSV(ArrayList<Orden> ordenes) throws IOException {
+            
+            CSV lineas = new CSV("Empresa.csv");
+            String linea = lineas.firstLine();
+            linea = lineas.nextLine();
+            
+            // Mientras haya lineas obtenemos los datos del archivo
+            while(linea != null) {
+                String rut = lineas.get_csvField(linea,1);
+                String servicio = lineas.get_csvField(linea,2);
+                
+                Orden orden = new Orden("rut","servicio");
+                orden.setRut(rut);
+                orden.setServicio(servicio);
+                ordenes.add(orden); // AÃ±ade la informacion a la lista
+            }
+            
+            lineas.close(); // Cierra el archivo
+
+        }
+}

@@ -1,4 +1,6 @@
 proyectogestiondeordenes\CSV.class
+proyectogestiondeordenes\Persona.class
 proyectogestiondeordenes\ProyectoGestionDeOrdenes.class
+proyectogestiondeordenes\CSVWriter.class
 proyectogestiondeordenes\Orden.class
 proyectogestiondeordenes\Empresa.class
