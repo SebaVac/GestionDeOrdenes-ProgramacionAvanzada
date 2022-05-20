@@ -10,6 +10,32 @@ public class Empresa {
     private ArrayList <Persona> listaPersonas = new ArrayList <> ();
 
     /*Metodos*/
+    
+    //ingresar datos iniciales
+    public void agregarDatosIniciales(){
+        Persona persona1 = new Persona("20.980.419-0","Sebastian Saavedra");
+        Orden orden1 = new Orden("20.980.419-0","Pendiente");
+        
+        persona1.agregarOrden(orden1);
+        personas.put(persona1.getRut(),persona1);
+        listaPersonas.add(persona1);
+        
+        Persona persona2 = new Persona("20.906.578-9","Acdiel Bombin");
+        Orden orden2 = new Orden("20.906.578-9","Arreglo de pantalla");
+
+        
+        persona2.agregarOrden(orden2);
+        personas.put(persona2.getRut(),persona2);
+        listaPersonas.add(persona2);
+        
+        Persona persona3 = new Persona("20.844.578-2","Matias Gallardo");
+        Orden orden3 = new Orden("20.844.578-2","Instalacion de software");
+  
+        persona3.agregarOrden(orden3);
+        personas.put(persona3.getRut(),persona3);
+        listaPersonas.add(persona3);
+    }
+    
     //metodos relacionados con la persona/cliente
     public void agregarPersona() throws IOException{
         Persona persona = new Persona("rut","nombre");
@@ -52,8 +78,7 @@ public class Empresa {
             for(int i = 0;i < listaPersonas.size();i++){
                 persona = listaPersonas.get(i);
                 mostrarPersona(persona);
-                
-                System.out.println();
+                System.out.println("    ----------  ");
             }
         }
     }
@@ -145,7 +170,7 @@ public class Empresa {
         Persona persona;
         
         do{//Se valida si la persona existe o "no es nulo"
-            persona = buscarPersona();        
+            persona = (Persona) buscarPersona();        
             if(persona == null){
                 System.out.println("Rut no encontrado, ingrese nuevamente");
             }else{

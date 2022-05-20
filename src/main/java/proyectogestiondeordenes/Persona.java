@@ -45,7 +45,7 @@ public class Persona {
     }
     
     public void agregarOrden(Orden orden) {
-        this.ordenes.add(orden);
+        ordenes.add(orden);
         System.out.println("\nLa orden se ha ingresado correctamente.\n");
     }
     
@@ -129,11 +129,11 @@ public class Persona {
         for (int i = 0; i < ordenes.size(); i++) {//se recorre la lista de ordenes y se muestran los datos
         orden = (Orden) ordenes.get(i);
             if(comp.equals(orden.getServicio())){
-            cont=cont+1;
+            cont=cont+1; //contador para saber cuantas ordenes pendientes tiene el cliente
             }
         }
         System.out.println("");
-        System.out.println("Se ecuentran "+cont+" ordenes pendientes");
+        System.out.println("Se ecuentra(n) "+cont+" orden(es) pendiente(s)");
         System.out.println("");
     }
     public Orden modificarOrden(Orden orden) throws IOException{

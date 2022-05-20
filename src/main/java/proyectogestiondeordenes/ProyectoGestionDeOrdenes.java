@@ -10,6 +10,8 @@ public class ProyectoGestionDeOrdenes {
         BufferedReader usuario = new BufferedReader(new InputStreamReader(System.in));
         Empresa empresa = new Empresa();
         
+        empresa.agregarDatosIniciales();
+        
         //ciclo para ir manejando las distintas opciones del menu
         do {
             seleccion = mostrarMenu(usuario);
