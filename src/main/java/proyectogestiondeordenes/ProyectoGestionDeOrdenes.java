@@ -17,7 +17,7 @@ public class ProyectoGestionDeOrdenes {
             seleccion = mostrarMenu(usuario);
             switch(seleccion) {
                 case 1:
-                    empresa.agregarPersona();
+                    empresa.agregarCliente();
                     break;
                 case 2:
                     
@@ -35,10 +35,10 @@ public class ProyectoGestionDeOrdenes {
                     empresa.modificarOrden();
                     break;
                 case 7:
-                    empresa.eliminarPersona();
+                    empresa.eliminarCliente();
                     break;
                 case 8:
-                    empresa.mostrarPersonas();
+                    empresa.mostrarClientes();
                     break;
                 case 9:
                     empresa.mostrarParesImpares();
