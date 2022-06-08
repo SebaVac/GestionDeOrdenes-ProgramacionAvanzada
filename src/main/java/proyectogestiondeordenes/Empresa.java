@@ -3,85 +3,191 @@ package proyectogestiondeordenes;
 import java.io.*;
 import java.util.*;
 
-public class Empresa {
+public class Empresa implements EstadoOrden {
 
     /*Variables de instancia*/
     private HashMap <String, Cliente> clientes = new HashMap <> ();
+    private HashMap <String, Empleado> empleados = new HashMap <> ();
     private ArrayList <Cliente> listaClientes = new ArrayList <> ();
+    private ArrayList <Empleado> listaEmpleados = new ArrayList<> ();
 
     /*Metodos*/
     
     //ingresar datos iniciales
     public void agregarDatosIniciales(){
-        Cliente cliente1 = new Cliente("20.980.419-0","Sebastian Saavedra");
-        Orden orden1 = new Orden("20.980.419-0","Pendiente");
+        //se ingresan los empleados
+        Empleado empleado1 = new Empleado("20.980.419-0","Sebastian Saavedra");
+        
+        empleados.put(empleado1.getRut(),empleado1);
+        listaEmpleados.add(empleado1);
+        
+        Empleado empleado2 = new Empleado("20.960.630-5","Javiera Zuniga");
+        
+        empleados.put(empleado2.getRut(),empleado2);
+        listaEmpleados.add(empleado2);
+        
+        //se ingresan los clientes
+        Cliente cliente1 = new Cliente("20.906.578-9","Acdiel Bombin");
+        Orden orden1 = new Orden("20.906.578-9","Reparacion",true);
         
         cliente1.agregarOrden(orden1);
         clientes.put(cliente1.getRut(),cliente1);
         listaClientes.add(cliente1);
         
-        Cliente cliente2 = new Cliente("20.906.578-9","Acdiel Bombin");
-        Orden orden2 = new Orden("20.906.578-9","Arreglo de pantalla");
-
         
+        Cliente cliente2 = new Cliente("20.844.578-2","Matias Gallardo");
+        Orden orden2 = new Orden("20.844.578-2","Instalacion Software",false);
+  
         cliente2.agregarOrden(orden2);
         clientes.put(cliente2.getRut(),cliente2);
         listaClientes.add(cliente2);
         
-        Cliente cliente3 = new Cliente("20.844.578-2","Matias Gallardo");
-        Orden orden3 = new Orden("20.844.578-2","Instalacion de software");
-  
-        cliente3.agregarOrden(orden3);
-        clientes.put(cliente3.getRut(),cliente3);
-        listaClientes.add(cliente3);
     }
     
     //metodos relacionados con la cliente/cliente
-    public void agregarCliente() throws IOException{
+    public void agregarPersona() throws IOException{
         Cliente cliente = new Cliente("rut","nombre");
+        Empleado empleado = new Empleado("rut","nombre");
         
-        Orden orden = new Orden("rut","servicio");
-        String nombre, rut;
-        
+        Orden orden = new Orden("rut","servicio",false);
+        String nombre, rut,seleccion;
+        int eleccion;
         BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
+       
+        System.out.println("1.-Agregar Cliente");
+        System.out.println("2.-Agregar Empleado");
+        seleccion = teclado.readLine();
+        eleccion = Integer.parseInt(seleccion);
         
-        //Se ingresan los datos por teclado
-        System.out.println("Ingrese nombre de la cliente: ");
-        nombre = teclado.readLine();
-        cliente.setNombre(nombre);
-
+        if(eleccion == 1){     
         //ciclo para validar el rut de una cliente
         do{
-            System.out.println("\nIngrese rut de la cliente(con puntos y guion): ");
+            System.out.println("\nIngrese rut del cliente(con puntos y guion): ");
             rut = teclado.readLine();
             
             //Validacion
             if(rut.length() != 12){
                 System.out.println("Rut incorrecto, intente nuevamente\n");
             }else{
-                cliente.setRut(rut);
-                orden.setRut(rut); 
+                if(clientes.get(rut) != null){
+                    System.out.println("Rut ya ingresado, intente nuevamente\n"); 
+                }else{
+                    cliente.setRut(rut);
+                    orden.setRut(rut);
+                    
+                    //Se ingresan los datos por teclado
+                    System.out.println("Ingrese nombre del cliente: ");
+                    nombre = teclado.readLine();
+                    cliente.setNombre(nombre);
+
+                    //se ingresa servicio
+                    orden.setServicio(ingresarServicio());
+                    
+                    if(orden.getServicio().equals(EstadoOrden.estado1)){
+                        orden.setEstado(false);
+                    }else{
+                        orden.setEstado(true);
+                    }
+                    cliente.agregarOrden(orden);
+                    clientes.put(rut,cliente);
+                    listaClientes.add(cliente);
+                }
             }
         }while(rut.length() != 12);
         
-        //se ingresa servicio
-        orden.setServicio(ingresarServicio());
-        cliente.agregarOrden(orden);
-        clientes.put(rut,cliente);
-        listaClientes.add(cliente);
+        }else{
+           
+        //validacion rut    
+        do{
+            System.out.println("\nIngrese rut del empleado (con puntos y guion): ");
+            rut = teclado.readLine();
+            
+            //Validacion
+            if(rut.length() != 12){
+                System.out.println("Rut incorrecto, intente nuevamente\n");
+            }else{
+                if(empleados.get(rut) != null){
+                    System.out.println("Rut ya ingresado, intente nuevamente\n");  
+                }else{
+                    empleado = empleado.agregarEmpleado(rut);
+                }
+            }
+        }while(rut.length() != 12);
+
+        //se ingresa a las colecciones de empleados
+        empleados.put(empleado.getRut(), empleado);
+        listaEmpleados.add(empleado);
+        }  
     }
-    //SobrecargaMostrarCliente
-    public void mostrarClientes(){
-        Cliente cliente;
+
+    public void mostrarPersona() throws IOException{
+        BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
+        int eleccion;
+        String convertir;
         
-        if(clientes != null){
+        do{
+        System.out.println("Mostrar lista de: ");
+        System.out.println("1.-Clientes");
+        System.out.println("2.-Empleados");
+        System.out.println("3.-Todo");
+        
+        convertir = teclado.readLine();
+        eleccion = Integer.parseInt(convertir);
+        }while(eleccion < 1 || eleccion > 3);
+        
+        switch(eleccion){
+            case 1:
+                mostrarClientes();
+                break;
+                
+            case 2:
+                mostrarEmpleados();
+                break;
+                
+            case 3:
+                System.out.println("-------------Empleados-------------");
+                mostrarEmpleados();
+                System.out.println("-------------Clientes-------------");
+                mostrarClientes();
+                break;
+        }
+        
+    }
+    
+    public void mostrarClientes() throws IOException{
+        Cliente cliente;
+        int aux;
+        
+        if(clientes != null && listaClientes != null){
             for(int i = 0;i < listaClientes.size();i++){
                 cliente = listaClientes.get(i);
-                mostrarCliente(cliente);
-                System.out.println("    ----------  ");
+                aux = i+1;
+                System.out.println("----------------------------------");
+                System.out.println(""+aux+"°:");
+                cliente.mostrarCliente();
+                System.out.println("----------------------------------");
             }
         }
     }
+    
+    
+    public void mostrarEmpleados(){
+        Empleado empleado;
+        int aux;
+        
+        if(empleados != null && listaEmpleados != null){
+            for(int i = 0; i < listaEmpleados.size(); i++){
+                empleado = listaEmpleados.get(i);
+                aux = i+1;
+                System.out.println("----------------------------------");
+                System.out.println(""+aux+"°:");
+                empleado.mostrarEmpleado();
+                System.out.println("----------------------------------");
+            }
+        }
+    }
+    
+    
     public void mostrarParesImpares()throws IOException{
         Cliente cliente;
         if(clientes != null){
@@ -91,8 +197,7 @@ public class Empresa {
             }
         }
     }
-     
-    
+      
     public void mostrarEstadoDeServicio() throws IOException{
             Cliente cliente;
         
@@ -109,27 +214,66 @@ public class Empresa {
     
     }
     
-    public void mostrarCliente(Cliente cliente){
-        String nombre = cliente.getNombre();
-        String rut = cliente.getRut();
-        System.out.println("Nombre:"+nombre);
-        System.out.println("Rut:"+rut); 
-        cliente.mostrarOrdenes();  
-    }
-    
     public Cliente buscarCliente() throws IOException{
         //se ingresa un rut por teclado y se retorna el objeto "Cliente" que se encuentra en la coleccion de clientes
         BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Ingrese el rut del cliente(con puntos y guion): ");
+        
         String rut = teclado.readLine();
         
         return (Cliente) clientes.get(rut);
     }
+    
+    public Empleado buscarEmpleado() throws IOException{
+        //se ingresa un rut por teclado y se retorna el objeto "Empleado" que se encuentra en la coleccion de empleados
+        BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
+        System.out.println("Ingrese el rut del Empleado(con puntos y guion): ");
+
+        String rut = teclado.readLine();
+        
+        return (Empleado) empleados.get(rut);
+    }
    
+    public void eliminarPersona() throws IOException{
+        BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
+        int eleccion;
+        String convertir;
+        
+        do{
+        System.out.println("La persona a eliminar tiene el rol de: ");
+        System.out.println("1.-Cliente");
+        System.out.println("2.-Empleado");
+        
+        convertir = teclado.readLine();
+        eleccion = Integer.parseInt(convertir);
+        }while(eleccion < 1 || eleccion > 2);
+        
+        switch(eleccion){
+            case 1:
+                eliminarCliente();
+                break;
+                
+            case 2:
+                eliminarEmpleado();
+                break;
+        }
+    }
+    
     public void eliminarCliente() throws IOException{
         Cliente cliente = buscarCliente();
-        if(listaClientes.remove(cliente)){
-            clientes.remove(cliente.getRut());//se elimina la persona de el mapa
+        if(listaClientes.contains(cliente) && clientes.containsKey(cliente.getRut())){
+            clientes.remove(cliente.getRut());//se elimina el cliente del mapa
+            listaClientes.remove(cliente);//se elimina el cliente de la lista
+            System.out.println("Se ha eliminado correctamente");
+        }
+    }
+    
+    public void eliminarEmpleado() throws IOException{
+        Empleado empleado = buscarEmpleado();
+        
+        if(listaEmpleados.contains(empleado) && empleados.containsKey(empleado.getRut())){
+            empleados.remove(empleado.getRut());
+            listaEmpleados.remove(empleado);
             System.out.println("Se ha eliminado correctamente");
         }
     }
@@ -138,8 +282,9 @@ public class Empresa {
     public void agregarOrden() throws IOException {
         
         String rut;
-        Orden orden;
+        Orden orden = new Orden("rut","servicio",false);
         String servicio;
+        boolean estado = false;;
         BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
         
         do{
@@ -147,7 +292,7 @@ public class Empresa {
             rut = teclado.readLine();
             
             //Validacion
-            if(rut.length() != 12){
+            if((rut.length() != 12) || (clientes.get(rut) != null)){
                 System.out.println("Rut incorrecto, intente nuevamente\n");
             }
         }while(rut.length() != 12);
@@ -156,10 +301,10 @@ public class Empresa {
         
 
         System.out.println("Ingresar nuevo servicio: ");
-        servicio = teclado.readLine();
+        servicio = ingresarServicio();
         
         //Modificacion del servicio
-        orden = cliente.agregarOrden(rut, servicio);
+        orden = cliente.agregarOrden(rut, servicio,estado);
         cliente.agregarOrden(orden);
     }
     
@@ -183,7 +328,7 @@ public class Empresa {
         BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
 
         Cliente cliente = buscarCliente();
-        mostrarCliente(cliente);//se muestran las ordenes de la persona
+        cliente.mostrarCliente();//se muestran las ordenes de la persona
 
         System.out.println("Ingrese el numero de la orden que desea eliminar: ");
         String seleccion = teclado.readLine();
@@ -216,27 +361,146 @@ public class Empresa {
         String servicio,convertir;
         int eleccion;
         
-        System.out.println("¿Ingresar Servicio?");
-       do{
-            System.out.println("1.- Si");
-            System.out.println("2.- No");
-            convertir = teclado.readLine();
-            eleccion = Integer.parseInt(convertir);
-            
-            //Validacion
-            if((eleccion != 1) && (eleccion != 2)){
-                System.out.println("Eleccion no valida, intente nuevamente");
-            }
-       }while((eleccion != 1) && (eleccion != 2));
-        
-        if(eleccion == 1){
-        //se ingresa por teclado el servicio que requirio la cliente
-        System.out.println("\nIngrese servicio ofrecido: ");
-        servicio = teclado.readLine(); 
+        //se escoge por teclado el servicio que requirio la cliente
+        do{
+        System.out.println("1.-Instalacion Software");
+        System.out.println("2.-Limpieza General");
+        System.out.println("3.-Reparacion");
+        System.out.println("\nIngrese una opcion: ");
+        convertir = teclado.readLine(); 
+        eleccion = Integer.parseInt(convertir); 
+        }while(eleccion < 1 || eleccion > 3);
+ 
+        servicio = estado(eleccion);
         
         return servicio;
-        }
+    }
+    
+    @Override
+    public String estado(int eleccion) {
         
-        return "Pendiente";
+        switch(eleccion){
+            case 1:
+                return EstadoOrden.estado2;
+                
+            case 2:
+                return EstadoOrden.estado3;
+                
+            case 3:
+                return EstadoOrden.estado4;
+                
+        }
+
+        return null;
+    }
+    
+    public void modificarPersona() throws IOException{
+        BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
+        int eleccion;
+        String convertir;
+        
+        do{
+        System.out.println("La persona a modificar tiene el rol de: ");
+        System.out.println("1.-Cliente");
+        System.out.println("2.-Empleado");
+        
+        convertir = teclado.readLine();
+        eleccion = Integer.parseInt(convertir);
+        }while(eleccion < 1 || eleccion > 2);
+        
+        switch(eleccion){
+            case 1:
+                modificarCliente();
+                break;
+                
+            case 2:
+                modificarEmpleado();
+                break;
+        }
+    }
+    
+    public void modificarCliente() throws IOException {
+        Cliente cliente;
+        Cliente clienteAux;
+        String aux;
+        int num;
+        BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
+        
+        mostrarClientes();
+
+        //se le solicita al usuario el numero del cliente para poder modificar sus datos
+        System.out.println("Ingresar numero de cliente");
+        aux = teclado.readLine();
+        num = Integer.parseInt(aux);
+        num = num-1;
+        
+        cliente = listaClientes.get(num);
+        clienteAux = clientes.get(cliente.getRut());
+        
+        //se modifican los datos de la persona
+        System.out.println("Ingrese nombre del cliente:");
+        aux = teclado.readLine();
+        cliente.setNombre(aux);
+        
+        
+        do{
+            System.out.println("Ingrese rut del cliente con puntos y guion:");
+            aux = teclado.readLine();
+            
+            //validacion
+            if(aux.length() != 12){
+                System.out.println("Rut incorrecto, intente nuevamente\n");
+            }
+        }while(aux.length() != 12);
+        cliente.setRut(aux);
+        
+        cliente.modificarOrden(cliente);
+        
+        listaClientes.remove(num);//se borra el contenido en la casilla "num"
+        listaClientes.add(num, cliente);//se ingresa el cliente con las modificaciones realizadas y se inserta en el indice "num" del arrayList
+        
+        clientes.remove(clienteAux.getRut());//se remueve el contenido de la casilla
+        clientes.put(cliente.getRut(), cliente);//se reemplaza por el nuevo cliente
+    }
+    
+    public void modificarEmpleado() throws IOException{
+        Empleado empleado;
+        Empleado empleadoAux;
+        String aux;
+        int num;
+        BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
+        
+        mostrarEmpleados();
+        
+        //se le solicita al usuario el numero del Empleado para poder modificar sus datos;
+        System.out.println("Ingresar numero del empleado: ");
+        aux = teclado.readLine();
+        num = Integer.parseInt(aux);
+        num = num-1;
+        
+        empleado = listaEmpleados.get(num);
+        empleadoAux = empleados.get(empleado.getRut());
+        
+        //se modifican los datos de la persona
+        System.out.println("Ingrese nombre del empleado:");
+        aux = teclado.readLine();
+        empleado.setNombre(aux);
+        
+        do{
+            System.out.println("Ingrese el rut del Empleado con putnos y guion: ");
+            aux = teclado.readLine();
+            
+            //validacion
+            if(aux.length() != 12){
+                System.out.println("Rut incorrecto, intente nuevamente.\n");
+            }
+        }while(aux.length() != 12);
+        empleado.setRut(aux);
+
+        listaEmpleados.remove(num); //se borra el contenido en la casilla "num"
+        listaEmpleados.add(num,empleado); //se ingresa el empleado con las modificaciones realizadas y se inserta en el indice "num" del arrayList
+        
+        empleados.remove(empleadoAux.getRut());
+        empleados.put(empleado.getRut(), empleado);
     }
 }

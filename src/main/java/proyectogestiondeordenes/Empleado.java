@@ -28,4 +28,27 @@ public class Empleado extends Persona {
         return nombre;
     }
     
+    public Empleado agregarEmpleado(String rut) throws IOException{
+        Empleado empleado = new Empleado("rut","nombre");
+        
+        String nombre;
+        
+        BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
+        
+        //ciclo para validar el rut de una cliente
+
+        
+        //Se ingresan los datos por teclado
+        System.out.println("Ingrese nombre de la cliente: ");
+        nombre = teclado.readLine();
+        empleado.setNombre(nombre);
+        
+        return empleado;
+    }
+    
+    //mostrar
+    public void mostrarEmpleado(){
+        System.out.println("Nombre: "+this.nombre);
+        System.out.println("Rut: "+this.rut);
+    }
 }
