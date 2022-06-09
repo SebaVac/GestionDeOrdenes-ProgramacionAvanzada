@@ -5,8 +5,6 @@ import java.util.*;
 
 public class Empleado extends Persona {
     
-    private ArrayList<Orden> ordenes;
-    
     public Empleado(String rut, String nombre){
         this.rut = rut;
         this.nombre = nombre;
@@ -21,83 +19,36 @@ public class Empleado extends Persona {
         this.nombre = nombre;
     }
     
-    public ArrayList<Orden> getOrdenes() {
-        return ordenes;
-    }
-    
-    public void setOrdenes(ArrayList<Orden> ordenes) {
-        this.ordenes = ordenes;
-    }
-    
-    
-    /*Sobrecarga de metodos*/
-    public Orden agregarOrden(String rut,String servicio){
-        Orden orden = new Orden("rut","servicio");
-        
-        orden.setRut(rut);
-        orden.setServicio(servicio);
-        
-        return orden;
-    }
-    
-    public void agregarOrden(Orden orden) {
-        this.ordenes.add(orden);
-        System.out.println("\nLa orden se ha ingresado correctamente.\n");
+     /*Getters*/
+    public String getRut() {
+        return rut;
     }
 
-    public void eliminarOrden(String servicio) {
-        Orden orden = buscarOrden(servicio);
-        ordenes.remove(orden);
-        System.out.println("\nLa orden se ha eliminado correctamente.\n");
+    public String getNombre() {
+        return nombre;
     }
+    
+    public Empleado agregarEmpleado(String rut) throws IOException{
+        Empleado empleado = new Empleado("rut","nombre");
+        
+        String nombre;
+        
+        BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
+        
+        //ciclo para validar el rut de una cliente
 
-    public Orden buscarOrden(String servicio) {
-        Orden orden;
-        for (int i = 0; i < ordenes.size(); i++) {
-            orden = (Orden) ordenes.get(i);
-            if (orden.getServicio().equals(servicio)) {
-                return orden;
-            }
-        }
-        return null;
+        
+        //Se ingresan los datos por teclado
+        System.out.println("Ingrese nombre de la cliente: ");
+        nombre = teclado.readLine();
+        empleado.setNombre(nombre);
+        
+        return empleado;
     }
     
-    public void mostrarOrdenes() {
-        Orden orden;
-        int aux;
-        for (int i = 0; i < ordenes.size(); i++) {
-            orden = (Orden) ordenes.get(i);
-            aux = i+1;
-            System.out.println("Datos orden n°" + aux + ":");
-            System.out.println("Rut cliente: " + orden.getRut() + "");
-            System.out.println("Servicio: " + orden.getServicio());
-            System.out.println("\n");
-        }
+    //mostrar
+    public void mostrarEmpleado(){
+        System.out.println("Nombre: "+this.nombre);
+        System.out.println("Rut: "+this.rut);
     }
-   
-    public Orden modificarOrden(Orden orden) throws IOException{
-            String rutOrden;
-            String auxRut;
-            String servicio;
-            rutOrden = orden.getRut();
-            
-            BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
-            
-            if(buscarOrden(rutOrden) == orden){
-                
-                System.out.println("Modificar Datos");
-                System.out.println("Rut cliente: ");
-                auxRut = teclado.readLine();
-                orden.setRut(auxRut);
-                
-                System.out.println("Servicio ofrecido: ");
-                servicio = teclado.readLine();
-                orden.setServicio(servicio);
-                
-                System.out.println("\nSe ha modificado correctamente.\n");
-            }
-            
-        return orden;
-    }
-    
 }
