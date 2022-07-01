@@ -3,6 +3,10 @@ package proyectogestiondeordenes;
 import java.io.*;
 import java.util.*;
 
+/**
+ *
+ * @author Usuario
+ */
 public class Empresa implements EstadoOrden {
 
     /*Variables de instancia*/
@@ -14,6 +18,10 @@ public class Empresa implements EstadoOrden {
     /*Metodos*/
     
     //ingresar datos iniciales
+
+    /**
+     *
+     */
     public void agregarDatosIniciales(){
         //se ingresan los empleados
         Empleado empleado1 = new Empleado("20.980.419-0","Sebastian Saavedra");
@@ -36,15 +44,22 @@ public class Empresa implements EstadoOrden {
         
         
         Cliente cliente2 = new Cliente("20.844.578-2","Matias Gallardo");
-        Orden orden2 = new Orden("20.844.578-2","Instalacion Software",false);
-  
+        Orden orden2 = new Orden("20.844.578-2","Limpieza General",true);
+        Orden orden3 = new Orden("20.844.578-2","Instalacion Software",false);
+        
         cliente2.agregarOrden(orden2);
+        cliente2.agregarOrden(orden3);
         clientes.put(cliente2.getRut(),cliente2);
         listaClientes.add(cliente2);
         
     }
     
     //metodos relacionados con la cliente/cliente
+
+    /**
+     *
+     * @throws IOException
+     */
     public void agregarPersona() throws IOException{
         Cliente cliente = new Cliente("rut","nombre");
         Empleado empleado = new Empleado("rut","nombre");
@@ -80,17 +95,9 @@ public class Empresa implements EstadoOrden {
                     nombre = teclado.readLine();
                     cliente.setNombre(nombre);
 
-                    //se ingresa servicio
-                    orden.setServicio(ingresarServicio());
-                    
-                    if(orden.getServicio().equals(EstadoOrden.estado1)){
-                        orden.setEstado(false);
-                    }else{
-                        orden.setEstado(true);
-                    }
-                    cliente.agregarOrden(orden);
                     clientes.put(rut,cliente);
                     listaClientes.add(cliente);
+                    System.out.println("El cliente se ha ingresado correctamente");
                 }
             }
         }while(rut.length() != 12);
@@ -109,7 +116,8 @@ public class Empresa implements EstadoOrden {
                 if(empleados.get(rut) != null){
                     System.out.println("Rut ya ingresado, intente nuevamente\n");  
                 }else{
-                    empleado = empleado.agregarEmpleado(rut);
+                    empleado = empleado.agregarNombreEmpleado(rut);
+                    empleado.setRut(rut);
                 }
             }
         }while(rut.length() != 12);
@@ -120,6 +128,10 @@ public class Empresa implements EstadoOrden {
         }  
     }
 
+    /**
+     *
+     * @throws IOException
+     */
     public void mostrarPersona() throws IOException{
         BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
         int eleccion;
@@ -154,6 +166,10 @@ public class Empresa implements EstadoOrden {
         
     }
     
+    /**
+     *
+     * @throws IOException
+     */
     public void mostrarClientes() throws IOException{
         Cliente cliente;
         int aux;
@@ -170,7 +186,9 @@ public class Empresa implements EstadoOrden {
         }
     }
     
-    
+    /**
+     *
+     */
     public void mostrarEmpleados(){
         Empleado empleado;
         int aux;
@@ -187,17 +205,37 @@ public class Empresa implements EstadoOrden {
         }
     }
     
-    
-    public void mostrarParesImpares()throws IOException{
+    /**
+     *
+     * @throws IOException
+     */
+    public void mostrarClienteMasOrdenesTotales()throws IOException{
         Cliente cliente;
-        if(clientes != null){
-            for(int i = 0;i < listaClientes.size();i++){
-                cliente = listaClientes.get(i);
-                cliente.paresEimpares(cliente);
+        int cont = 0;
+        int indexAux = 0;
+        int max = 0;
+        
+        for(int i = 0; i < listaClientes.size(); i++){
+            cliente = listaClientes.get(i);
+            cont = cliente.contarOrdenes();
+            if(max < cont){
+                max = cont;
+                indexAux = i;
             }
         }
+        
+        cliente = listaClientes.get(indexAux);
+        System.out.println("----------------------------------");
+        System.out.println("Datos:");
+        System.out.println("Nombre: "+cliente.getNombre());
+        System.out.println("Rut: "+cliente.getRut());
+        System.out.println("Tiene "+max+" ordenes en total.");
+        System.out.println("----------------------------------");
     }
-      
+    /**
+     *
+     * @throws IOException
+     */
     public void mostrarEstadoDeServicio() throws IOException{
             Cliente cliente;
         
@@ -214,6 +252,11 @@ public class Empresa implements EstadoOrden {
     
     }
     
+    /**
+     *
+     * @return
+     * @throws IOException
+     */
     public Cliente buscarCliente() throws IOException{
         //se ingresa un rut por teclado y se retorna el objeto "Cliente" que se encuentra en la coleccion de clientes
         BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
@@ -224,6 +267,11 @@ public class Empresa implements EstadoOrden {
         return (Cliente) clientes.get(rut);
     }
     
+    /**
+     *
+     * @return
+     * @throws IOException
+     */
     public Empleado buscarEmpleado() throws IOException{
         //se ingresa un rut por teclado y se retorna el objeto "Empleado" que se encuentra en la coleccion de empleados
         BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
@@ -234,6 +282,10 @@ public class Empresa implements EstadoOrden {
         return (Empleado) empleados.get(rut);
     }
    
+    /**
+     *
+     * @throws IOException
+     */
     public void eliminarPersona() throws IOException{
         BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
         int eleccion;
@@ -259,6 +311,10 @@ public class Empresa implements EstadoOrden {
         }
     }
     
+    /**
+     *
+     * @throws IOException
+     */
     public void eliminarCliente() throws IOException{
         Cliente cliente = buscarCliente();
         if(listaClientes.contains(cliente) && clientes.containsKey(cliente.getRut())){
@@ -268,6 +324,10 @@ public class Empresa implements EstadoOrden {
         }
     }
     
+    /**
+     *
+     * @throws IOException
+     */
     public void eliminarEmpleado() throws IOException{
         Empleado empleado = buscarEmpleado();
         
@@ -279,6 +339,11 @@ public class Empresa implements EstadoOrden {
     }
     
     //metodos relacionados con las ordenes
+
+    /**
+     *
+     * @throws IOException
+     */
     public void agregarOrden() throws IOException {
         
         String rut;
@@ -292,37 +357,63 @@ public class Empresa implements EstadoOrden {
             rut = teclado.readLine();
             
             //Validacion
-            if((rut.length() != 12) || (clientes.get(rut) != null)){
+            if((rut.length() != 12) || (clientes.get(rut) == null)){
                 System.out.println("Rut incorrecto, intente nuevamente\n");
-            }
-        }while(rut.length() != 12);
-        
-        Cliente cliente = clientes.get(rut);//se obtiene el objeto con clave "rut" del mapa de clientes
-        
+            }else{
+                Cliente cliente = clientes.get(rut);//se obtiene el objeto con clave "rut" del mapa de clientes
 
-        System.out.println("Ingresar nuevo servicio: ");
-        servicio = ingresarServicio();
-        
-        //Modificacion del servicio
-        orden = cliente.agregarOrden(rut, servicio,estado);
-        cliente.agregarOrden(orden);
+
+                System.out.println("Ingresar nuevo servicio: ");
+                servicio = ingresarServicio();
+
+                //Modificacion del servicio
+                orden = cliente.agregarOrden(rut, servicio,estado);
+                cliente.agregarOrden(orden);
+            }
+        }while((rut.length() != 12) || (clientes.get(rut) == null));
     }
     
+    /**
+     *
+     * @throws IOException
+     */
     public void mostrarOrdenes() throws IOException{
         Cliente cliente;
-        
-        do{//Se valida si la cliente existe o "no es nulo"
-            cliente = (Cliente) buscarCliente();        
-            if(cliente == null){
-                System.out.println("Rut no encontrado, ingrese nuevamente");
-            }else{
+        String seleccion;
+        int i;
+        BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
+
+        do{
+            System.out.println("----------------------------------");
+            System.out.println("1.- Cliente en especifico");
+            System.out.println("2.- Todos los clientes");
+            System.out.println("----------------------------------");
+            System.out.println("Seleccionar una opcion:");
+            seleccion = teclado.readLine();
+            i = Integer.parseInt(seleccion);
+            if(i == 1){
+                do{
+                    cliente = (Cliente) buscarCliente();
+                    if(cliente == null){
+                        System.out.println("Rut no encontrado, ingrese nuevamente\n");
+                    }
+                }while(cliente == null);
                 cliente.mostrarOrdenes();
                 break;
+            }else{
+                for(i = 0; i < listaClientes.size(); i++){
+                    cliente = listaClientes.get(i);
+                    cliente.mostrarCliente();
+                    System.out.println("----------------------------------");
+                }
             }
-
-        }while(cliente != null);
+        }while((i < 1) || (i > 2));
     }
     
+    /**
+     *
+     * @throws IOException
+     */
     public void eliminarOrden() throws IOException{//en proceso
 
         BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
@@ -336,6 +427,10 @@ public class Empresa implements EstadoOrden {
         cliente.eliminarOrden(i-1);
     }
    
+    /**
+     *
+     * @throws IOException
+     */
     public void modificarOrden() throws IOException{
         //inicializacion de variables
         Orden orden;
@@ -356,6 +451,11 @@ public class Empresa implements EstadoOrden {
     }
     
     //metodos relacionados con el servicio
+    /**
+     *
+     * @return
+     * @throws IOException
+     */
     public String ingresarServicio() throws IOException{
         BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
         String servicio,convertir;
@@ -376,6 +476,11 @@ public class Empresa implements EstadoOrden {
         return servicio;
     }
     
+    /**
+     *
+     * @param eleccion
+     * @return
+     */
     @Override
     public String estado(int eleccion) {
         
@@ -394,6 +499,10 @@ public class Empresa implements EstadoOrden {
         return null;
     }
     
+    /**
+     *
+     * @throws IOException
+     */
     public void modificarPersona() throws IOException{
         BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
         int eleccion;
@@ -419,6 +528,10 @@ public class Empresa implements EstadoOrden {
         }
     }
     
+    /**
+     *
+     * @throws IOException
+     */
     public void modificarCliente() throws IOException {
         Cliente cliente;
         Cliente clienteAux;
@@ -463,6 +576,10 @@ public class Empresa implements EstadoOrden {
         clientes.put(cliente.getRut(), cliente);//se reemplaza por el nuevo cliente
     }
     
+    /**
+     *
+     * @throws IOException
+     */
     public void modificarEmpleado() throws IOException{
         Empleado empleado;
         Empleado empleadoAux;
