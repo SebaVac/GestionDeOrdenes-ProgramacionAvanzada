@@ -3,10 +3,6 @@ package proyectogestiondeordenes;
 import java.util.*;
 import java.io.*;
 
-/**
- *
- * @author Usuario
- */
 public class CSV {
 
     /*Variables de instancia*/
@@ -14,61 +10,27 @@ public class CSV {
     private String currentLine;
 
     /*Constructores*/
-
-    /**
-     *
-     * @param name
-     * @throws FileNotFoundException
-     */
-
     public CSV(String name) throws FileNotFoundException {
         this.file = new BufferedReader(new FileReader("./" + name + ".csv"));
     }
 
-    /**
-     *
-     * @param ruta
-     * @param archivo
-     * @throws FileNotFoundException
-     */
     public CSV(String ruta, String archivo) throws FileNotFoundException {
         this.file = new BufferedReader(new FileReader(ruta + archivo));
     }
 
-    /**
-     *
-     */
     public CSV() {
     }
 
     /*Metodos*/
-
-    /**
-     *
-     * @return
-     * @throws IOException
-     */
-
     public String firstLine() throws IOException {
         return nextLine();
     }
 
-    /**
-     *
-     * @return
-     * @throws IOException
-     */
     public String nextLine() throws IOException {
         this.currentLine = this.file.readLine();
         return (this.currentLine);
     }
 
-    /**
-     *
-     * @param line
-     * @param field
-     * @return
-     */
     public String get_csvField(String line, int field) {
         Scanner s = new Scanner(line);
         int index = (0);
@@ -94,12 +56,6 @@ public class CSV {
         return (null);
     }
 
-    /**
-     *
-     * @param field
-     * @param line
-     * @return
-     */
     public String get_csvField(int field, String line) {
         Scanner s = new Scanner(line);
         int index = (0);
@@ -123,10 +79,6 @@ public class CSV {
         return (null);
     }
 
-    /**
-     *
-     * @throws IOException
-     */
     public void close() throws IOException {
         file.close();
     }
