@@ -1,37 +1,73 @@
-package proyectogestiondeordenes;
+ package proyectogestiondeordenes;
 
 import java.io.*;
 import java.util.*;
 
+/**
+ *
+ * @author Usuario
+ */
 public class Cliente extends Persona implements EstadoOrden {
 
     private ArrayList<Orden> ordenes;
 
+    /**
+     *
+     * @param rut
+     * @param nombre
+     */
     public Cliente(String rut, String nombre) {
-        this.rut = rut;
-        this.nombre = nombre;
+        setRut(rut);
+        setNombre(nombre);
         this.ordenes = new ArrayList<>();
     }
     
     /*Setters*/
+
+    /**
+     *
+     * @param rut
+     */
     public void setRut(String rut) {
         this.rut = rut;
     }
 
+    /**
+     *
+     * @param nombre
+     */
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
     /*Getters*/
+
+    /**
+     *
+     * @return
+     */
     public String getRut() {
         return rut;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getNombre() {
         return nombre;
     }
 
     /*Metodos*/
+
+    /**
+     *
+     * @param rut
+     * @param servicio
+     * @param estado
+     * @return
+     */
+
     
     public Orden agregarOrden(String rut,String servicio,boolean estado){
         Orden orden = new Orden("rut","servicio",false);
@@ -43,11 +79,19 @@ public class Cliente extends Persona implements EstadoOrden {
         return orden;
     }
     
+    /**
+     *
+     * @param orden
+     */
     public void agregarOrden(Orden orden) {
         ordenes.add(orden);
         System.out.println("\nLa orden se ha ingresado correctamente.\n");
     }
     
+    /**
+     *
+     * @param persona
+     */
     public void paresEimpares(Persona persona){
         
         int aux=ordenes.size();  
@@ -83,6 +127,10 @@ public class Cliente extends Persona implements EstadoOrden {
     
     }
 
+    /**
+     *
+     * @param i
+     */
     public void eliminarOrden(int i) {
         Orden orden = ordenes.get(i);//se inicializa la variable "orden" con el contenido de la casilla i de la lista "ordenes" 
         orden = buscarOrden(orden.getServicio());
@@ -90,6 +138,11 @@ public class Cliente extends Persona implements EstadoOrden {
         System.out.println("\nLa orden se ha eliminado correctamente.\n");
     }
 
+    /**
+     *
+     * @param servicio
+     * @return
+     */
     public Orden buscarOrden(String servicio) {
         Orden orden;
         for (int i = 0; i < ordenes.size(); i++) {//ciclo que recorre la lista de ordenes en busca de un servicio en especifico
@@ -101,6 +154,11 @@ public class Cliente extends Persona implements EstadoOrden {
         return null;//si no se encuentra la orden, se retorna null
     }
     
+    /**
+     *
+     * @param index
+     * @return
+     */
     public Orden buscarOrden(int index){
         
         Orden orden = ordenes.get(index); //se retorna el objeto "orden" que se encuentra en el lugar "i" del arreglo de ordenes
@@ -108,12 +166,18 @@ public class Cliente extends Persona implements EstadoOrden {
         return orden;
     }
 
+    /**
+     *
+     */
     public void mostrarCliente(){
         System.out.println("Nombre:"+this.nombre);
         System.out.println("Rut:"+this.rut); 
         mostrarOrdenes();  
     }
     
+    /**
+     *
+     */
     public void mostrarOrdenes(){
         Orden orden;
         int aux;
@@ -130,16 +194,31 @@ public class Cliente extends Persona implements EstadoOrden {
             }
         }
     }
+         
+    /**
+     *
+     * @return
+     */
+    public int contarOrdenes(){
+        int cont = ordenes.size();
+        return cont;
+    }
 
-    
+    /**
+     *
+     */
     public void mostrarOrdenesPendientes(){
         Orden orden;
-        String comp = "Pendiente";
         int cont=0;
         
         for (int i = 0; i < ordenes.size(); i++) {//se recorre la lista de ordenes y se muestran los datos
         orden = (Orden) ordenes.get(i);
-            if(comp.equals(orden.getServicio())){
+            if(orden.estado == false){
+            System.out.println("----------------------------------");
+            System.out.println("Rut cliente: " + orden.getRut());
+            System.out.println("Servicio: " + orden.getServicio());
+            System.out.println("Estado de orden: Pendiente");
+            System.out.println("----------------------------------");
             cont=cont+1; //contador para saber cuantas ordenes pendientes tiene el cliente
             }
         }
@@ -149,6 +228,13 @@ public class Cliente extends Persona implements EstadoOrden {
     }
     
     //sobrecarga de metodos
+
+    /**
+     *
+     * @param orden
+     * @return
+     * @throws IOException
+     */
     public Orden modificarOrden(Orden orden) throws IOException{
         String servicio;
         String convertir;
@@ -201,6 +287,11 @@ public class Cliente extends Persona implements EstadoOrden {
         return orden;
     }
     
+    /**
+     *
+     * @param eleccion
+     * @return
+     */
     @Override
     public String estado(int eleccion) {
         if(eleccion == 1){
@@ -215,6 +306,10 @@ public class Cliente extends Persona implements EstadoOrden {
         return null;
     }
     
+    /**
+     *
+     * @param cliente
+     */
     public void modificarOrden(Cliente cliente){
         Orden ordenAux;
         
